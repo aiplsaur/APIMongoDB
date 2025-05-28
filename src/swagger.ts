@@ -11,7 +11,7 @@ const swaggerDefinition: SwaggerDefinition = {
   servers: [
     {
       url: process.env.NODE_ENV === 'production'
-        ? process.env.BASE_URL || 'https://your-app-name.onrender.com'
+        ? process.env.BASE_URL || 'https://apimongodb-3n6v.onrender.com'
         : `http://localhost:${process.env.PORT || 8080}`,
     },
   ],
