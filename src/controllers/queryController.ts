@@ -36,10 +36,10 @@ export const executeQuery = async (req: Request, res: Response): Promise<void> =
       return;
     }
 
-    // Execute the query
-    const result = await db.eval(query);
+    // Execute the query using runCommand
+    const result = await db.command({ eval: query });
 
-    const response: ApiResponse = {
+    const response: ApiResponse<any> = {
       success: true,
       data: {
         results: result
@@ -90,7 +90,7 @@ export const saveQuery = async (req: Request, res: Response): Promise<void> => {
 
     await db.collection('saved_queries').insertOne(savedQuery);
 
-    const response: ApiResponse<SavedQuery> = {
+    const response: ApiResponse<{ query: SavedQuery }> = {
       success: true,
       data: {
         query: savedQuery
@@ -122,8 +122,8 @@ export const getQueries = async (req: Request, res: Response): Promise<void> => 
   try {
     const queries = await db.collection('saved_queries')
       .find({})
-      .project({ id: 1, name: 1, query: 1 })
-      .toArray();
+      .project({ id: 1, name: 1, query: 1, collection: 1, createdAt: 1, updatedAt: 1 })
+      .toArray() as SavedQuery[];
 
     const response: ApiResponse<SavedQuery[]> = {
       success: true,
